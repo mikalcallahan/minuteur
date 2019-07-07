@@ -1,0 +1,22 @@
+{
+  "name": "minuteur",
+  "version": "1.0.0",
+  "description": "A time tracking application",
+  "main": "index.js",
+  "bin": {
+    "minuteur": "index.js"
+  },
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mikalcallahan/minutuer.git"
+  },
+  "author": "Mikal Callahan <hello@mikal.co> (https://mikal.co)",
+  "license": "MIT",
+  "devDependencies": {
+    "inquirer": "^6.4.1",
+    "readline-sync": "^1.4.9"
+  }
+}

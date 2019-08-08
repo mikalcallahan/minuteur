@@ -18,5 +18,8 @@
   "devDependencies": {
     "inquirer": "^6.4.1",
     "readline-sync": "^1.4.9"
+  },
+  "dependencies": {
+    "node-notifier": "^5.4.1"
   }
 }

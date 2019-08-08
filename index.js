@@ -3,6 +3,7 @@
 // imports
 const readline=require('readline-sync') // for cli i/o
 const fs=require('fs')  // for file system i/o
+const notifier = require('node-notifier')
 
 // global variables
 const path='./config' // temp path
@@ -16,16 +17,24 @@ var log = { // define skeleton of log object
   stop: ''
 }
 
+notifier.on('click', function(notifierObject, options, event) {
+
+});
+
+notifier.on('timeout', function(notifierObject, options) {
+
+});
+
 checkDir()  // check if directory exists, if not create it
 
 // commence app
 var mode = readline.question('What would you like to do?\n')  // get mode type
 switch(mode) {
   case 'log': // if log, insert
-    insert()
+    insertLog()
     break
   case 'timer': // if timer, timer
-    timer()
+    beginTimer()
     break
   default:  // default displays help
     //help()
@@ -38,7 +47,7 @@ switch(mode) {
  *  @async
  *  @function insert
  */
-async function insert() {
+async function insertLog() {
   log.area = readline.question('Quel genre est-ce que?\n')
   log.project = readline.question('Quel projet est-ce que?\n')
   log.desc = readline.question('Inscrire une description\n')
@@ -52,8 +61,17 @@ async function insert() {
  *  Commences timer
  *  @function timer
  */
-function timer() {
-  console.log('insert')
+function beginTimer() {
+  const timerTime = readline.question('Combien de temps?\n')
+  setTimeout(printNotification, timerTime*60000)
+}
+
+function printNotification() {
+  notifier.notify({
+    title: 'Attention! Attention!',
+    message: 'Ce minuteur a fini!',
+    wait: true
+  })
 }
 
 /*
@@ -65,7 +83,7 @@ function timer() {
 async function checkDir() {
   await fs.mkdir(path, { recursive: true }, (err) => {  // promise to make directory
     if(err) { console.log(err.message) }  // if error
-    else { console.log('dir created') }
+    else { }
   })
 }
 

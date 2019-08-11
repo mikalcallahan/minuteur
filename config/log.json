@@ -184,4 +184,130 @@
   "start": 1565487011859,
   "stop": 1565487011860,
   "time": 1
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565487891864,
+  "stop": 1565487891865,
+  "time": 1
+}{
+  "area": "code",
+  "project": "minuteur",
+  "desc": "Migrated to typescript now attempting stop",
+  "start": "21.52",
+  "stop": "21.53",
+  "time": 0
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565488521572,
+  "stop": 1565488521573,
+  "time": 1
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565488774292,
+  "stop": 1565488774293,
+  "time": 1
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565488866391,
+  "stop": 1565488866392,
+  "time": 1
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565488894712,
+  "stop": 1565488894713,
+  "time": 1
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565488956210,
+  "stop": 1565488956211,
+  "time": 1
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565488999187,
+  "stop": 1565488999188,
+  "time": 1
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565489033044,
+  "stop": 1565489033045,
+  "time": 1
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565489158833,
+  "stop": "15654891588331",
+  "time": 14089402429498
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565489335710,
+  "stop": "15654893357101",
+  "time": "1"
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565489388968,
+  "stop": "15654893889681",
+  "time": "1"
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565489418968,
+  "stop": "15654894189681",
+  "time": "1"
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565489426937,
+  "stop": "15654894269371000",
+  "time": "1000"
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565489453906,
+  "stop": "15654894539062000",
+  "time": "2000"
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565489551790,
+  "stop": 1565489551792,
+  "time": "2"
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565489593111,
+  "stop": 1565489594111,
+  "time": 1000
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565489627096,
+  "stop": 1565489628096,
+  "time": 1000
 }

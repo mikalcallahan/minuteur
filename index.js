@@ -105,17 +105,25 @@ function beginTimer() {
             switch (_a.label) {
                 case 0:
                     timerTime = readline.question('Combien de temps?\n');
-                    (log.area = 'Timer'),
-                        (log.project = 'unknown'),
-                        (log.desc = 'unknown'),
-                        (log.start = new Date().getTime()),
-                        (log.stop = log.start + +timerTime),
-                        (log.time = (Math.round(log.stop - log.start) * 100) / 100);
-                    setTimeout(printNotification, timerTime * 60000);
-                    logs.push(log);
-                    return [4 /*yield*/, updateLog()];
+                    log.area = 'Timer';
+                    log.project = 'unknown';
+                    log.desc = 'unknown';
+                    log.start = new Date().getTime();
+                    printToTerminal('start time:' + log.start);
+                    log.stop = log.start + +timerTime;
+                    printToTerminal('stop time:' + log.stop);
+                    log.time = +timerTime;
+                    printToTerminal('total time:' + +timerTime);
+                    return [4 /*yield*/, new Promise(function () { return setTimeout(printNotification, +timerTime); })];
                 case 1:
                     _a.sent();
+                    printToTerminal('timeout finished');
+                    logs.push(log);
+                    printToTerminal('log pushed');
+                    return [4 /*yield*/, updateLog()];
+                case 2:
+                    _a.sent();
+                    printToTerminal('log updated');
                     return [2 /*return*/];
             }
         });
@@ -146,13 +154,14 @@ function checkDir() {
                         // promise to make directory
                         if (err) {
                             console.log(err.message);
-                        } // if error
+                        }
                         else {
-                            printToTerminal('directory created');
+                            //printToTerminal('directory created')
                         }
                     })];
                 case 1:
                     _a.sent();
+                    printToTerminal('directory created');
                     return [2 /*return*/];
             }
         });
@@ -170,12 +179,12 @@ function updateLog() {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, fs.appendFile(path + '/log.json', JSON.stringify(log, null, 2), function (err) {
                         // promise to append log file
-                        if (!err) {
-                            // if no error
-                            console.log(log);
-                            console.log('appended file');
-                            return;
-                        }
+                        /*if (!err) {
+                          // if no error
+                          console.log(log)
+                          console.log('appended file')
+                          return
+                        }*/
                     })];
                 case 1:
                     _a.sent();

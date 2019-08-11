@@ -63,15 +63,21 @@ async function insertLog() {
  */
 async function beginTimer() {
   const timerTime = readline.question('Combien de temps?\n')
-  ;(log.area = 'Timer'),
-    (log.project = 'unknown'),
-    (log.desc = 'unknown'),
-    (log.start = new Date().getTime()),
-    (log.stop = log.start + +timerTime),
-    (log.time = (Math.round(log.stop - log.start) * 100) / 100)
-  setTimeout(printNotification, timerTime * 60000)
+  log.area = 'Timer'
+  log.project = 'unknown'
+  log.desc = 'unknown'
+  log.start = new Date().getTime()
+  printToTerminal('start time:' + log.start)
+  log.stop = log.start + +timerTime
+  printToTerminal('stop time:' + log.stop)
+  log.time = +timerTime
+  printToTerminal('total time:' + +timerTime)
+  await new Promise(() => setTimeout(printNotification, +timerTime))
+  printToTerminal('timeout finished')
   logs.push(log)
+  printToTerminal('log pushed')
   await updateLog()
+  printToTerminal('log updated')
 }
 
 function printNotification() {
@@ -98,11 +104,11 @@ async function checkDir() {
     // promise to make directory
     if (err) {
       console.log(err.message)
-    } // if error
-    else {
-      printToTerminal('directory created')
+    } else {
+      //printToTerminal('directory created')
     }
   })
+  printToTerminal('directory created')
 }
 
 /*
@@ -114,11 +120,11 @@ async function checkDir() {
 async function updateLog() {
   await fs.appendFile(path + '/log.json', JSON.stringify(log, null, 2), err => {
     // promise to append log file
-    if (!err) {
+    /*if (!err) {
       // if no error
       console.log(log)
       console.log('appended file')
       return
-    }
+    }*/
   })
 }

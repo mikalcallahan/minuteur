@@ -66,27 +66,27 @@ async function beginTimer() {
   log.area = 'Timer'
   log.project = 'unknown'
   log.desc = 'unknown'
-  log.start = new Date().getTime()
-  printToTerminal('start time:' + log.start)
-  log.stop = log.start + +timerTime
-  printToTerminal('stop time:' + log.stop)
+  log.start = getCurrentTime()
+  setTimeout(printNotification, +timerTime)
+  log.stop = getCurrentTime()
   log.time = +timerTime
-  printToTerminal('total time:' + +timerTime)
-  await new Promise(() => setTimeout(printNotification, +timerTime))
-  printToTerminal('timeout finished')
   logs.push(log)
-  printToTerminal('log pushed')
   await updateLog()
-  printToTerminal('log updated')
 }
 
 function printNotification() {
+  try {
+    notifier.notify({
+      title: 'Attention! Attention!',
+      message: 'Ce minuteur a fini!',
+      wait: true,
+    })
+  } catch {}
   printToTerminal('timer done!!')
-  notifier.notify({
-    title: 'Attention! Attention!',
-    message: 'Ce minuteur a fini!',
-    wait: true,
-  })
+}
+
+function getCurrentTime() {
+  return new Date().getTime()
 }
 
 function printToTerminal(message: string) {
@@ -108,7 +108,7 @@ async function checkDir() {
       //printToTerminal('directory created')
     }
   })
-  printToTerminal('directory created')
+  //printToTerminal('directory created')
 }
 
 /*
@@ -118,13 +118,14 @@ async function checkDir() {
  *
  */
 async function updateLog() {
+  printNotification()
   await fs.appendFile(path + '/log.json', JSON.stringify(log, null, 2), err => {
     // promise to append log file
-    /*if (!err) {
+    if (!err) {
       // if no error
       console.log(log)
       console.log('appended file')
-      return
-    }*/
+    }
   })
+  printToTerminal('appended file')
 }

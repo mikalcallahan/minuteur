@@ -108,34 +108,32 @@ function beginTimer() {
                     log.area = 'Timer';
                     log.project = 'unknown';
                     log.desc = 'unknown';
-                    log.start = new Date().getTime();
-                    printToTerminal('start time:' + log.start);
-                    log.stop = log.start + +timerTime;
-                    printToTerminal('stop time:' + log.stop);
+                    log.start = getCurrentTime();
+                    setTimeout(printNotification, +timerTime);
+                    log.stop = getCurrentTime();
                     log.time = +timerTime;
-                    printToTerminal('total time:' + +timerTime);
-                    return [4 /*yield*/, new Promise(function () { return setTimeout(printNotification, +timerTime); })];
+                    logs.push(log);
+                    return [4 /*yield*/, updateLog()];
                 case 1:
                     _a.sent();
-                    printToTerminal('timeout finished');
-                    logs.push(log);
-                    printToTerminal('log pushed');
-                    return [4 /*yield*/, updateLog()];
-                case 2:
-                    _a.sent();
-                    printToTerminal('log updated');
                     return [2 /*return*/];
             }
         });
     });
 }
 function printNotification() {
+    try {
+        notifier.notify({
+            title: 'Attention! Attention!',
+            message: 'Ce minuteur a fini!',
+            wait: true
+        });
+    }
+    catch (_a) { }
     printToTerminal('timer done!!');
-    notifier.notify({
-        title: 'Attention! Attention!',
-        message: 'Ce minuteur a fini!',
-        wait: true
-    });
+}
+function getCurrentTime() {
+    return new Date().getTime();
 }
 function printToTerminal(message) {
     console.log(message);
@@ -158,10 +156,11 @@ function checkDir() {
                         else {
                             //printToTerminal('directory created')
                         }
-                    })];
+                    })
+                    //printToTerminal('directory created')
+                ];
                 case 1:
                     _a.sent();
-                    printToTerminal('directory created');
                     return [2 /*return*/];
             }
         });
@@ -177,17 +176,19 @@ function updateLog() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
-                case 0: return [4 /*yield*/, fs.appendFile(path + '/log.json', JSON.stringify(log, null, 2), function (err) {
-                        // promise to append log file
-                        /*if (!err) {
-                          // if no error
-                          console.log(log)
-                          console.log('appended file')
-                          return
-                        }*/
-                    })];
+                case 0:
+                    printNotification();
+                    return [4 /*yield*/, fs.appendFile(path + '/log.json', JSON.stringify(log, null, 2), function (err) {
+                            // promise to append log file
+                            if (!err) {
+                                // if no error
+                                console.log(log);
+                                console.log('appended file');
+                            }
+                        })];
                 case 1:
                     _a.sent();
+                    printToTerminal('appended file');
                     return [2 /*return*/];
             }
         });

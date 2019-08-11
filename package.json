@@ -7,7 +7,8 @@
     "minuteur": "index.js"
   },
   "scripts": {
-    "start": "tsc index.ts && ./index.js",
+    "start": "./index.js",
+    "dev": "tsc index.ts && ./index.js",
     "build": "typescript index.ts && ./index.js"
   },
   "repository": {

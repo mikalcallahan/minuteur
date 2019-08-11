@@ -310,4 +310,25 @@
   "start": 1565489627096,
   "stop": 1565489628096,
   "time": 1000
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565491300682,
+  "stop": 1565491303682,
+  "time": 3000
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565491321643,
+  "stop": 1565491324643,
+  "time": 3000
+}{
+  "area": "Timer",
+  "project": "unknown",
+  "desc": "unknown",
+  "start": 1565491514650,
+  "stop": 1565491514653,
+  "time": 2000
 }

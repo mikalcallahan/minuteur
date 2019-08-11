@@ -6,8 +6,8 @@ const fs = require('fs') // for file system i/o
 const notifier = require('node-notifier')
 
 // global variables
-const path = './config' // temp path
-//const path=process.env['HOME']+'/.config/minutuer'  // set config & log path
+//const path = './config' // temp path
+const path = process.env['HOME'] + '/.config/minutuer' // set config & log path
 var logs = []
 var log = {
   // define skeleton of log object

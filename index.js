@@ -39,8 +39,8 @@ var readline = require('readline-sync'); // for cli i/o
 var fs = require('fs'); // for file system i/o
 var notifier = require('node-notifier');
 // global variables
-var path = './config'; // temp path
-//const path=process.env['HOME']+'/.config/minutuer'  // set config & log path
+//const path = './config' // temp path
+var path = process.env['HOME'] + '/.config/minutuer'; // set config & log path
 var logs = [];
 var log = {
     // define skeleton of log object

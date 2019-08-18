@@ -19,20 +19,36 @@ var log = {
   time: 0,
 }
 
-notifier.on('click', function(notifierObject, options, event) {})
+// notifier.on('click', function(notifierObject, options, event) {})
 
-notifier.on('timeout', function(notifierObject, options) {})
+// notifier.on('timeout', function(notifierObject, options) {})
 
 checkDir() // check if directory exists, if not create it
 
+async function checkDir() {
+  await fs.mkdir(path, { recursive: true }, err => {
+    // promise to make directory
+    if (err) {
+      console.log(err.message)
+    } else {
+      //printToTerminal('directory created')
+    }
+  })
+  //printToTerminal('directory created')
+}
+
 // commence app
 var mode = readline.question('Que veuillez-vous faire?\n') // get mode type
+printToTerminal('\n')
 switch (mode) {
   case 'log': // if log, insert
     insertLog()
     break
   case 'timer': // if timer, timer
     beginTimer()
+    break
+  case 'chronometre':
+    chronometre()
     break
   default:
     // default displays help
@@ -48,13 +64,32 @@ switch (mode) {
  */
 async function insertLog() {
   log.area = readline.question('Quel genre est-ce que?\n')
+  printToTerminal('\n')
   log.project = readline.question('Quel projet est-ce que?\n')
+  printToTerminal('\n')
   log.desc = readline.question('Inscrire une description\n')
+  printToTerminal('\n')
   log.start = readline.question('À quel heure as tu commencé?\n')
+  printToTerminal('\n')
   log.stop = readline.question('À quel heure est tu fini.e?\n')
+  printToTerminal('\n')
   log.time = (Math.round(log.stop - log.start) * 100) / 100
   logs.push(log)
   await updateLog()
+}
+
+function printToTerminal(message: string) {
+  console.log(message)
+}
+
+async function updateLog() {
+  await fs.appendFile(path + '/log.json', JSON.stringify(log, null, 2), err => {
+    // promise to append log file
+    if (!err) {
+      // if no error
+    }
+  })
+  // printToTerminal('appended file')
 }
 
 /*
@@ -62,70 +97,47 @@ async function insertLog() {
  *  @function timer
  */
 async function beginTimer() {
-  const timerTime = readline.question('Combien de temps?\n')
-  log.area = 'Timer'
-  log.project = 'unknown'
-  log.desc = 'unknown'
+  generateLog()
+  const timerTime = readline.question('Combien de temps? (en minutes)\n')
   log.start = getCurrentTime()
-  setTimeout(printNotification, +timerTime)
+  setTimeout(printNotification, +timerTime * 60000)
   log.stop = getCurrentTime()
   log.time = +timerTime
   logs.push(log)
   await updateLog()
 }
 
-function printNotification() {
-  try {
-    notifier.notify({
-      title: 'Attention! Attention!',
-      message: 'Ce minuteur a fini!',
-      wait: true,
-    })
-  } catch {}
-  printToTerminal('timer done!!')
+function generateLog() {
+  log.area = readline.question('Quel genre est-ce que?\n')
+  printToTerminal('\n')
+  log.project = readline.question('Quel projet est-ce que?\n')
+  printToTerminal('\n')
+  log.desc = readline.question('Inscrire une description\n')
+  printToTerminal('\n')
 }
 
 function getCurrentTime() {
   return new Date().getTime()
 }
 
-function printToTerminal(message: string) {
-  console.log(message)
+function printNotification() {
+  try {
+    notifier.notify({
+      title: 'Attention! Attention!',
+      message: 'Votre minuteur a fini!',
+      wait: true,
+    })
+  } catch (err) {
+    printToTerminal(err)
+  }
+  printToTerminal('timer done!!')
 }
 
-/*
- *  Check to see if directory exists,
- *  if it does not, creates it
- *  @async
- *  @function checkDir
- */
-async function checkDir() {
-  await fs.mkdir(path, { recursive: true }, err => {
-    // promise to make directory
-    if (err) {
-      console.log(err.message)
-    } else {
-      //printToTerminal('directory created')
-    }
-  })
-  //printToTerminal('directory created')
-}
-
-/*
- *  Updates (appends)the current log
- *  with data insert
- *  @async
- *
- */
-async function updateLog() {
-  printNotification()
-  await fs.appendFile(path + '/log.json', JSON.stringify(log, null, 2), err => {
-    // promise to append log file
-    if (!err) {
-      // if no error
-      console.log(log)
-      console.log('appended file')
-    }
-  })
-  printToTerminal('appended file')
+function chronometre() {
+  let startTime = new Date()
+  readline.question('Entre  r e t u r n  quand tu veux finir\n\n')
+  const endTime = new Date()
+  const timerDifference = Math.abs(+endTime - +startTime) / 1000
+  const timerDifferenceAsString = timerDifference.toString() + ' seconds'
+  printToTerminal(timerDifferenceAsString)
 }

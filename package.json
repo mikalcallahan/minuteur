@@ -8,8 +8,7 @@
   },
   "scripts": {
     "start": "./index.js",
-    "dev": "tsc index.ts && ./index.js",
-    "build": "typescript index.ts && ./index.js"
+    "dev": "tsc index.ts && ./index.js"
   },
   "repository": {
     "type": "git",

@@ -51,99 +51,9 @@ var log = {
     stop: 0,
     time: 0
 };
-notifier.on('click', function (notifierObject, options, event) { });
-notifier.on('timeout', function (notifierObject, options) { });
+// notifier.on('click', function(notifierObject, options, event) {})
+// notifier.on('timeout', function(notifierObject, options) {})
 checkDir(); // check if directory exists, if not create it
-// commence app
-var mode = readline.question('Que veuillez-vous faire?\n'); // get mode type
-switch (mode) {
-    case 'log': // if log, insert
-        insertLog();
-        break;
-    case 'timer': // if timer, timer
-        beginTimer();
-        break;
-    default:
-        // default displays help
-        //help()
-        printToTerminal('latta');
-        break;
-}
-/*
- *  Insert a new timestamp in log
- *  @async
- *  @function insert
- */
-function insertLog() {
-    return __awaiter(this, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    log.area = readline.question('Quel genre est-ce que?\n');
-                    log.project = readline.question('Quel projet est-ce que?\n');
-                    log.desc = readline.question('Inscrire une description\n');
-                    log.start = readline.question('À quel heure as tu commencé?\n');
-                    log.stop = readline.question('À quel heure est tu fini.e?\n');
-                    log.time = (Math.round(log.stop - log.start) * 100) / 100;
-                    logs.push(log);
-                    return [4 /*yield*/, updateLog()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-/*
- *  Commences timer
- *  @function timer
- */
-function beginTimer() {
-    return __awaiter(this, void 0, void 0, function () {
-        var timerTime;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    timerTime = readline.question('Combien de temps?\n');
-                    log.area = 'Timer';
-                    log.project = 'unknown';
-                    log.desc = 'unknown';
-                    log.start = getCurrentTime();
-                    setTimeout(printNotification, +timerTime);
-                    log.stop = getCurrentTime();
-                    log.time = +timerTime;
-                    logs.push(log);
-                    return [4 /*yield*/, updateLog()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
-        });
-    });
-}
-function printNotification() {
-    try {
-        notifier.notify({
-            title: 'Attention! Attention!',
-            message: 'Ce minuteur a fini!',
-            wait: true
-        });
-    }
-    catch (_a) { }
-    printToTerminal('timer done!!');
-}
-function getCurrentTime() {
-    return new Date().getTime();
-}
-function printToTerminal(message) {
-    console.log(message);
-}
-/*
- *  Check to see if directory exists,
- *  if it does not, creates it
- *  @async
- *  @function checkDir
- */
 function checkDir() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
@@ -166,31 +76,131 @@ function checkDir() {
         });
     });
 }
+// commence app
+var mode = readline.question('Que veuillez-vous faire?\n'); // get mode type
+printToTerminal('\n');
+switch (mode) {
+    case 'log': // if log, insert
+        insertLog();
+        break;
+    case 'timer': // if timer, timer
+        beginTimer();
+        break;
+    case 'chronometre':
+        chronometre();
+        break;
+    default:
+        // default displays help
+        //help()
+        printToTerminal('latta');
+        break;
+}
 /*
- *  Updates (appends)the current log
- *  with data insert
+ *  Insert a new timestamp in log
  *  @async
- *
+ *  @function insert
  */
-function updateLog() {
+function insertLog() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    printNotification();
-                    return [4 /*yield*/, fs.appendFile(path + '/log.json', JSON.stringify(log, null, 2), function (err) {
-                            // promise to append log file
-                            if (!err) {
-                                // if no error
-                                console.log(log);
-                                console.log('appended file');
-                            }
-                        })];
+                    log.area = readline.question('Quel genre est-ce que?\n');
+                    printToTerminal('\n');
+                    log.project = readline.question('Quel projet est-ce que?\n');
+                    printToTerminal('\n');
+                    log.desc = readline.question('Inscrire une description\n');
+                    printToTerminal('\n');
+                    log.start = readline.question('À quel heure as tu commencé?\n');
+                    printToTerminal('\n');
+                    log.stop = readline.question('À quel heure est tu fini.e?\n');
+                    printToTerminal('\n');
+                    log.time = (Math.round(log.stop - log.start) * 100) / 100;
+                    logs.push(log);
+                    return [4 /*yield*/, updateLog()];
                 case 1:
                     _a.sent();
-                    printToTerminal('appended file');
                     return [2 /*return*/];
             }
         });
     });
+}
+function printToTerminal(message) {
+    console.log(message);
+}
+function updateLog() {
+    return __awaiter(this, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, fs.appendFile(path + '/log.json', JSON.stringify(log, null, 2), function (err) {
+                        // promise to append log file
+                        if (!err) {
+                            // if no error
+                        }
+                    })
+                    // printToTerminal('appended file')
+                ];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+/*
+ *  Commences timer
+ *  @function timer
+ */
+function beginTimer() {
+    return __awaiter(this, void 0, void 0, function () {
+        var timerTime;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    generateLog();
+                    timerTime = readline.question('Combien de temps? (en minutes)\n');
+                    log.start = getCurrentTime();
+                    setTimeout(printNotification, +timerTime * 60000);
+                    log.stop = getCurrentTime();
+                    log.time = +timerTime;
+                    logs.push(log);
+                    return [4 /*yield*/, updateLog()];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/];
+            }
+        });
+    });
+}
+function generateLog() {
+    log.area = readline.question('Quel genre est-ce que?\n');
+    printToTerminal('\n');
+    log.project = readline.question('Quel projet est-ce que?\n');
+    printToTerminal('\n');
+    log.desc = readline.question('Inscrire une description\n');
+    printToTerminal('\n');
+}
+function getCurrentTime() {
+    return new Date().getTime();
+}
+function printNotification() {
+    try {
+        notifier.notify({
+            title: 'Attention! Attention!',
+            message: 'Votre minuteur a fini!',
+            wait: true
+        });
+    }
+    catch (err) {
+        printToTerminal(err);
+    }
+    printToTerminal('timer done!!');
+}
+function chronometre() {
+    var startTime = new Date();
+    readline.question('Entre  r e t u r n  quand tu veux finir\n\n');
+    var endTime = new Date();
+    var timerDifference = Math.abs(+endTime - +startTime) / 1000;
+    var timerDifferenceAsString = timerDifference.toString() + ' seconds';
+    printToTerminal(timerDifferenceAsString);
 }

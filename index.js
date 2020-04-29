@@ -1,9 +1,11 @@
 #!/usr/bin/env node
+"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -34,10 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
+exports.__esModule = true;
 // imports
-var readline = require('readline-sync'); // for cli i/o
-var fs = require('fs'); // for file system i/o
-var notifier = require('node-notifier');
+var readline = require("readline-sync");
+var fs = require("fs");
+var notifier = require("node-notifier");
 // global variables
 //const path = './config' // temp path
 var path = process.env['HOME'] + '/.config/minutuer'; // set config & log path
@@ -47,8 +50,8 @@ var log = {
     area: '',
     project: '',
     desc: '',
-    start: 0,
-    stop: 0,
+    start: '',
+    stop: '',
     time: 0
 };
 // notifier.on('click', function(notifierObject, options, event) {})
@@ -77,7 +80,7 @@ function checkDir() {
     });
 }
 // commence app
-var mode = readline.question('Que veuillez-vous faire?\n'); // get mode type
+var mode = readline.question('Qu\'est-ce que vous voulez faire?\n'); // get mode type
 printToTerminal('\n');
 switch (mode) {
     case 'log': // if log, insert
@@ -103,25 +106,9 @@ switch (mode) {
 function insertLog() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    log.area = readline.question('Quel genre est-ce que?\n');
-                    printToTerminal('\n');
-                    log.project = readline.question('Quel projet est-ce que?\n');
-                    printToTerminal('\n');
-                    log.desc = readline.question('Inscrire une description\n');
-                    printToTerminal('\n');
-                    log.start = readline.question('À quel heure as tu commencé?\n');
-                    printToTerminal('\n');
-                    log.stop = readline.question('À quel heure est tu fini.e?\n');
-                    printToTerminal('\n');
-                    log.time = (Math.round(log.stop - log.start) * 100) / 100;
-                    logs.push(log);
-                    return [4 /*yield*/, updateLog()];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
+            generateLog(true);
+            updateLog();
+            return [2 /*return*/];
         });
     });
 }
@@ -157,11 +144,11 @@ function beginTimer() {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    generateLog();
+                    generateLog(false);
                     timerTime = readline.question('Combien de temps? (en minutes)\n');
-                    log.start = getCurrentTime();
+                    log.start = getCurrentTime().toString();
                     setTimeout(printNotification, +timerTime * 60000);
-                    log.stop = getCurrentTime();
+                    log.stop = getCurrentTime().toString();
                     log.time = +timerTime;
                     logs.push(log);
                     return [4 /*yield*/, updateLog()];
@@ -172,13 +159,18 @@ function beginTimer() {
         });
     });
 }
-function generateLog() {
-    log.area = readline.question('Quel genre est-ce que?\n');
+function generateLog(long) {
+    log.area = readline.question('Lequel est-ce que le genre?\n');
     printToTerminal('\n');
-    log.project = readline.question('Quel projet est-ce que?\n');
+    log.project = readline.question('Lequel est-ce le projet?\n');
     printToTerminal('\n');
     log.desc = readline.question('Inscrire une description\n');
     printToTerminal('\n');
+    if (long) {
+        log.start = readline.question('À quel heure est-ce que vous avez commener?\n');
+        printToTerminal('\n');
+        log.stop = readline.question('À quel heure est-ce que vous avez fini?\n');
+    }
 }
 function getCurrentTime() {
     return new Date().getTime();

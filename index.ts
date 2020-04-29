@@ -10,14 +10,23 @@ import * as notifier from 'node-notifier'
 //const path = './config' // temp path
 const path = process.env['HOME'] + '/.config/minutuer' // set config & log path
 var logs = []
-var log = {
+var log: Log = {
   // define skeleton of log object
   area: '',
   project: '',
   desc: '',
-  start: 0,
-  stop: 0,
+  start: '',
+  stop: '',
   time: 0,
+}
+
+interface Log {
+  area: string,
+  project: string,
+  desc: string,
+  start: string,
+  stop: string,
+  time: number
 }
 
 // notifier.on('click', function(notifierObject, options, event) {})
@@ -39,7 +48,7 @@ async function checkDir() {
 }
 
 // commence app
-var mode = readline.question('Que veuillez-vous faire?\n') // get mode type
+var mode = readline.question('Qu\'est-ce que vous voulez faire?\n') // get mode type
 printToTerminal('\n')
 switch (mode) {
   case 'log': // if log, insert
@@ -89,9 +98,9 @@ async function updateLog() {
 async function beginTimer() {
   generateLog(false)
   const timerTime = readline.question('Combien de temps? (en minutes)\n')
-  log.start = getCurrentTime()
+  log.start = getCurrentTime().toString()
   setTimeout(printNotification, +timerTime * 60000)
-  log.stop = getCurrentTime()
+  log.stop = getCurrentTime().toString()
   log.time = +timerTime
   logs.push(log)
   await updateLog()

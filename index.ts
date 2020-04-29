@@ -63,19 +63,8 @@ switch (mode) {
  *  @function insert
  */
 async function insertLog() {
-  log.area = readline.question('Quel genre est-ce que?\n')
-  printToTerminal('\n')
-  log.project = readline.question('Quel projet est-ce que?\n')
-  printToTerminal('\n')
-  log.desc = readline.question('Inscrire une description\n')
-  printToTerminal('\n')
-  log.start = readline.question('À quel heure as tu commencé?\n')
-  printToTerminal('\n')
-  log.stop = readline.question('À quel heure est tu fini.e?\n')
-  printToTerminal('\n')
-  log.time = (Math.round(log.stop - log.start) * 100) / 100
-  logs.push(log)
-  await updateLog()
+  generateLog(true)
+  updateLog()
 }
 
 function printToTerminal(message: string) {
@@ -97,7 +86,7 @@ async function updateLog() {
  *  @function timer
  */
 async function beginTimer() {
-  generateLog()
+  generateLog(false)
   const timerTime = readline.question('Combien de temps? (en minutes)\n')
   log.start = getCurrentTime()
   setTimeout(printNotification, +timerTime * 60000)
@@ -107,13 +96,18 @@ async function beginTimer() {
   await updateLog()
 }
 
-function generateLog() {
-  log.area = readline.question('Quel genre est-ce que?\n')
+function generateLog(long: boolean) : void {
+  log.area = readline.question('Lequel est-ce que le genre?\n')
   printToTerminal('\n')
-  log.project = readline.question('Quel projet est-ce que?\n')
+  log.project = readline.question('Lequel est-ce le projet?\n')
   printToTerminal('\n')
   log.desc = readline.question('Inscrire une description\n')
   printToTerminal('\n')
+  if(long) {
+  log.start = readline.question('À quel heure est-ce que vous avez commener?\n')
+  printToTerminal('\n')
+  log.stop = readline.question('À quel heure est-ce que vous avez fini?\n')
+  }
 }
 
 function getCurrentTime() {

@@ -1,9 +1,10 @@
 #!/usr/bin/env node
 
 // imports
-const readline = require('readline-sync') // for cli i/o
-const fs = require('fs') // for file system i/o
-const notifier = require('node-notifier')
+import * as readline from 'readline-sync'
+import * as fs from 'fs'
+import * as notifier from 'node-notifier'
+
 
 // global variables
 //const path = './config' // temp path

@@ -107,14 +107,14 @@ async function beginTimer() {
 }
 
 function generateLog(long: boolean) : void {
-  log.area = readline.question('Lequel est-ce que le genre?\n')
+  log.area = readline.question('Qu\'est-ce que le genre?\n')
   printToTerminal('\n')
-  log.project = readline.question('Lequel est-ce le projet?\n')
+  log.project = readline.question('Qu\'est-ce le projet?\n')
   printToTerminal('\n')
   log.desc = readline.question('Inscrire une description\n')
   printToTerminal('\n')
   if(long) {
-  log.start = readline.question('À quel heure est-ce que vous avez commener?\n')
+  log.start = readline.question('À quel heure est-ce que vous avez commencer?\n')
   printToTerminal('\n')
   log.stop = readline.question('À quel heure est-ce que vous avez fini?\n')
   }

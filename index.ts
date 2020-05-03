@@ -5,7 +5,6 @@ import * as readline from 'readline-sync'
 import * as fs from 'fs'
 import * as notifier from 'node-notifier'
 
-
 // global variables
 //const path = './config' // temp path
 const path = process.env['HOME'] + '/.config/minutuer' // set config & log path
@@ -82,7 +81,13 @@ function printToTerminal(message: string) {
 }
 
 async function updateLog() {
-  await fs.appendFile(path + '/log.json', JSON.stringify(log, null, 2), err => {
+  const oldLogs: Log[] = JSON.parse(fs.readFileSync(path + '/log.json', 'utf8'))// , (err, data) => {
+    /*if(err) throw err
+    oldLogs = JSON.parse(data)
+      //console.log('this data', data)
+  })*/
+  const newLogs = {...oldLogs,log} 
+  await fs.writeFile(path + '/log.json', JSON.stringify(newLogs, null, 2), { flag: 'w+' }, err => {
     // promise to append log file
     if (!err) {
       // if no error

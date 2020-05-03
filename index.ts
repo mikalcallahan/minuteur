@@ -35,7 +35,7 @@ interface Log {
 checkDir() // check if directory exists, if not create it
 
 async function checkDir() {
-  await fs.mkdir(path, { recursive: true }, err => {
+  fs.mkdir(path, { recursive: true }, err => {
     // promise to make directory
     if (err) {
       console.log(err.message)
@@ -82,18 +82,13 @@ function printToTerminal(message: string) {
 
 async function updateLog() {
   const oldLogs: Log[] = JSON.parse(fs.readFileSync(path + '/log.json', 'utf8'))// , (err, data) => {
-    /*if(err) throw err
-    oldLogs = JSON.parse(data)
-      //console.log('this data', data)
-  })*/
   const newLogs = {...oldLogs,log} 
-  await fs.writeFile(path + '/log.json', JSON.stringify(newLogs, null, 2), { flag: 'w+' }, err => {
+  fs.writeFile(path + '/log.json', JSON.stringify(newLogs, null, 2), { flag: 'w+' }, err => {
     // promise to append log file
     if (!err) {
       // if no error
     }
   })
-  // printToTerminal('appended file')
 }
 
 /*

@@ -52,6 +52,7 @@ exports.__esModule = true;
 var readline = require("readline-sync");
 var fs = require("fs");
 var notifier = require("node-notifier");
+var dateFns = require("date-fns");
 // global variables
 //const path = './config' // temp path
 var path = process.env['HOME'] + '/.config/minutuer'; // set config & log path
@@ -63,7 +64,8 @@ var log = {
     desc: '',
     start: '',
     stop: '',
-    time: 0
+    time: 0,
+    timestamp: 0
 };
 // notifier.on('click', function(notifierObject, options, event) {})
 // notifier.on('timeout', function(notifierObject, options) {})
@@ -71,22 +73,16 @@ checkDir(); // check if directory exists, if not create it
 function checkDir() {
     return __awaiter(this, void 0, void 0, function () {
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, fs.mkdir(path, { recursive: true }, function (err) {
-                        // promise to make directory
-                        if (err) {
-                            console.log(err.message);
-                        }
-                        else {
-                            //printToTerminal('directory created')
-                        }
-                    })
+            fs.mkdir(path, { recursive: true }, function (err) {
+                // promise to make directory
+                if (err) {
+                    console.log(err.message);
+                }
+                else {
                     //printToTerminal('directory created')
-                ];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
+                }
+            });
+            return [2 /*return*/];
         });
     });
 }
@@ -130,23 +126,17 @@ function updateLog() {
     return __awaiter(this, void 0, void 0, function () {
         var oldLogs, newLogs;
         return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    oldLogs = JSON.parse(fs.readFileSync(path + '/log.json', 'utf8')) // , (err, data) => {
-                    ;
-                    newLogs = __assign(__assign({}, oldLogs), { log: log });
-                    return [4 /*yield*/, fs.writeFile(path + '/log.json', JSON.stringify(newLogs, null, 2), { flag: 'w+' }, function (err) {
-                            // promise to append log file
-                            if (!err) {
-                                // if no error
-                            }
-                        })
-                        // printToTerminal('appended file')
-                    ];
-                case 1:
-                    _a.sent();
-                    return [2 /*return*/];
-            }
+            log.timestamp = getCurrentTime();
+            oldLogs = JSON.parse(fs.readFileSync(path + '/log.json', 'utf8')) // , (err, data) => {
+            ;
+            newLogs = __assign(__assign({}, oldLogs), { length: log });
+            fs.writeFile(path + '/log.json', JSON.stringify(newLogs, null, 2), { flag: 'w+' }, function (err) {
+                // promise to append log file
+                if (!err) {
+                    // if no error
+                }
+            });
+            return [2 /*return*/];
         });
     });
 }
@@ -163,6 +153,7 @@ function beginTimer() {
                     generateLog(false);
                     timerTime = readline.question('Combien de temps? (en minutes)\n');
                     log.start = getCurrentTime().toString();
+                    printToTerminal("Commenc\u00E9 \u00E0 " + dateFns.format(getCurrentTime(), 'H\'h\'m'));
                     setTimeout(printNotification, +timerTime * 60000);
                     log.stop = getCurrentTime().toString();
                     log.time = +timerTime;

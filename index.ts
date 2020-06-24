@@ -4,6 +4,8 @@
 import * as readline from 'readline-sync'
 import * as fs from 'fs'
 import * as notifier from 'node-notifier'
+import * as dateFns from 'date-fns'
+import { toDate } from 'date-fns'
 
 // global variables
 //const path = './config' // temp path
@@ -17,6 +19,7 @@ var log: Log = {
   start: '',
   stop: '',
   time: 0,
+  timestamp: 0
 }
 
 interface Log {
@@ -25,7 +28,8 @@ interface Log {
   desc: string,
   start: string,
   stop: string,
-  time: number
+  time: number,
+  timestamp: number
 }
 
 // notifier.on('click', function(notifierObject, options, event) {})
@@ -76,13 +80,14 @@ async function insertLog() {
   updateLog()
 }
 
-function printToTerminal(message: string) {
+function printToTerminal(message: any) {
   console.log(message)
 }
 
 async function updateLog() {
+  log.timestamp = getCurrentTime()
   const oldLogs: Log[] = JSON.parse(fs.readFileSync(path + '/log.json', 'utf8'))// , (err, data) => {
-  const newLogs = {...oldLogs,log} 
+  const newLogs = {...oldLogs, length: log}
   fs.writeFile(path + '/log.json', JSON.stringify(newLogs, null, 2), { flag: 'w+' }, err => {
     // promise to append log file
     if (!err) {
@@ -99,6 +104,9 @@ async function beginTimer() {
   generateLog(false)
   const timerTime = readline.question('Combien de temps? (en minutes)\n')
   log.start = getCurrentTime().toString()
+
+  printToTerminal(`Commencé à ${dateFns.format(getCurrentTime(), 'H\'h\'m' )}`)
+  
   setTimeout(printNotification, +timerTime * 60000)
   log.stop = getCurrentTime().toString()
   log.time = +timerTime
